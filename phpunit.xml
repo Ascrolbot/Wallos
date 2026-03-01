@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         cacheDirectory=".phpunit.cache"
+         executionOrder="depends,defects"
+         failOnRisky="true"
+         failOnWarning="true"
+         beStrictAboutOutputDuringTests="true">
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Security">
+            <directory>tests/Security</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>includes</directory>
+            <directory>endpoints</directory>
+        </include>
+        <exclude>
+            <directory>vendor</directory>
+            <directory>libs</directory>
+        </exclude>
+    </source>
+</phpunit>
