@@ -86,67 +86,65 @@ class HelpersTest extends TestCase
             'Biannual $60 subscription should equal $10/month');
     }
 
-    // DEFECT 1 : Division by zero when frequency=0 
+    // DEFECT 1 — FIXED: frequency=0 now returns 0.0 safely
 
-    //frequency=0 causes DivisionByZeroError in integer division branches.
-    //No guard clause exists. Related categories: ISO 25010: Functional Correctness, Reliability
-
-    
     #[Test]
-    public function frequencyZeroCausesDivisionByZeroOnDailyCycle(): void
+    public function frequencyZeroReturnsZeroAfterFix(): void
     {
-        $this->expectException(\DivisionByZeroError::class);
-        getPricePerMonth(self::CYCLE_DAILY, 0, 10.00);
+        $result = getPricePerMonth(self::CYCLE_MONTHLY, 0, 10.00);
+        $this->assertEqualsWithDelta(0.0, $result, 0.01,
+            'Frequency zero should return 0.0 after fix (was DivisionByZeroError)');
     }
 
     #[Test]
-    public function frequencyZeroCausesDivisionByZeroOnWeeklyCycle(): void
+    public function negativeFrequencyReturnsZeroAfterFix(): void
     {
-        $this->expectException(\DivisionByZeroError::class);
-        getPricePerMonth(self::CYCLE_WEEKLY, 0, 10.00);
+        $result = getPricePerMonth(self::CYCLE_MONTHLY, -1, 10.00);
+        $this->assertEqualsWithDelta(0.0, $result, 0.01,
+            'Negative frequency should return 0.0 after fix');
     }
 
     #[Test]
-    public function frequencyZeroCausesDivisionByZeroOnMonthlyCycle(): void
+    public function frequencyZeroDailyCycleReturnsZeroAfterFix(): void
     {
-        $this->expectException(\DivisionByZeroError::class);
-        getPricePerMonth(self::CYCLE_MONTHLY, 0, 10.00);
+        $result = getPricePerMonth(self::CYCLE_DAILY, 0, 10.00);
+        $this->assertEqualsWithDelta(0.0, $result, 0.01);
     }
 
     #[Test]
-    public function frequencyZeroCausesDivisionByZeroOnYearlyCycle(): void
+    public function frequencyZeroYearlyCycleReturnsZeroAfterFix(): void
     {
-        $this->expectException(\DivisionByZeroError::class);
-        getPricePerMonth(self::CYCLE_YEARLY, 0, 10.00);
+        $result = getPricePerMonth(self::CYCLE_YEARLY, 0, 10.00);
+        $this->assertEqualsWithDelta(0.0, $result, 0.01);
     }
 
 
-    // DEFECT 2 : No default case 
-
-    // No default case in switch. Unrecognised cycle returns
-    // undefined $pricePerMonth (null). Related categories: ISO 25010: Functional Correctness
+    // DEFECT 2 — FIXED: unrecognised cycle uses default case
 
     #[Test]
-    public function unrecognisedCycleValueReturnsNoValidResult(): void
+    public function unrecognisedCycleUsesDefaultAfterFix(): void
     {
-        $result = @getPricePerMonth(99, 1, 10.00);
-        $this->assertNull($result,
-            'Unrecognised cycle value should be handled but returns undefined variable');
+        $result = getPricePerMonth(99, 1, 10.00);
+        $this->assertEqualsWithDelta(10.00, $result, 0.01,
+            'Unrecognised cycle should fall back to monthly calculation after fix');
     }
 
     #[Test]
-    public function cycleValueZeroReturnsNoValidResult(): void
+    public function cycleZeroUsesDefaultAfterFix(): void
     {
-        $result = @getPricePerMonth(0, 1, 10.00);
-        $this->assertNull($result, 'Cycle value 0 is not handled by any switch case');
+        $result = getPricePerMonth(0, 1, 10.00);
+        $this->assertEqualsWithDelta(10.00, $result, 0.01,
+            'Cycle zero should fall back to monthly calculation after fix');
     }
 
     #[Test]
-    public function negativeCycleValueReturnsNoValidResult(): void
+    public function negativeCycleUsesDefaultAfterFix(): void
     {
-        $result = @getPricePerMonth(-1, 1, 10.00);
-        $this->assertNull($result, 'Negative cycle value is not handled by any switch case');
+        $result = getPricePerMonth(-1, 1, 10.00);
+        $this->assertEqualsWithDelta(10.00, $result, 0.01,
+            'Negative cycle should fall back to monthly calculation after fix');
     }
+
 
     // Boundary and precision tests 
 

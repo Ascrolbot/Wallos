@@ -2,6 +2,12 @@
 
 function getPricePerMonth($cycle, $frequency, $price)
 {
+    // Guard clause: prevent division by zero when frequency is invalid
+    // Fix for defect 1: frequency=0 caused DivisionByZeroError in all branches
+    if ($frequency <= 0) {
+        return 0.0;
+    }
+
     switch ($cycle) {
         case 1:
             $numberOfPaymentsPerMonth = (30 / $frequency);
@@ -15,6 +21,10 @@ function getPricePerMonth($cycle, $frequency, $price)
         case 4:
             $numberOfMonths = (12 * $frequency);
             return $price / $numberOfMonths;
+        default:
+            // Fix for defect 2: unrecognised cycle returned undefined variable
+            error_log("getPricePerMonth: unrecognised cycle value: " . $cycle);
+            return $price * (1 / $frequency);
     }
 }
 
