@@ -1,0 +1,11 @@
+parameters:
+    level: 5
+    paths:
+        - includes/stats_calculations.php
+        - includes/inputvalidation.php
+    excludePaths:
+        - vendor/*
+        - libs/*
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        - '#Function .+ invoked with \d+ parameters, \d+ required#'

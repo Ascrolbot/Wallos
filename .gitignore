@@ -5,3 +5,6 @@
 .DS_Store
 .idea/
 .vscode/
+/vendor/
+.phpunit.cache/
+composer.phar
