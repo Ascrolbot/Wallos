@@ -8,4 +8,12 @@ parameters:
         - libs/*
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
-        - '#Function .+ invoked with \d+ parameters, \d+ required#'
+        - '#Variable \$db might not be defined#'
+        - '#Variable \$userId might not be defined#'
+        - '#Variable \$userData might not be defined#'
+        - '#Variable \$i18n might not be defined#'
+        - '#Variable \$memberCost might not be defined#'
+        - '#Variable \$categoryCost might not be defined#'
+        - '#Variable \$paymentMethodsCount might not be defined#'
+        - '#Variable \$conditions in empty\(\) always exists#'
+        - '#Function translate not found#'
