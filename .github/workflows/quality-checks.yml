@@ -1,0 +1,61 @@
+name: Quality Checks
+
+on:
+  push:
+    branches: [ feature/quality-assurance-framework, main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  quality:
+    name: PHP Quality Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: sqlite3, gd, intl, curl, mbstring, zip, dom
+          coverage: xdebug
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      # Quality Gate 1: PHP Syntax Check
+      - name: PHP Lint Check
+        run: |
+          echo "=== Quality Gate 1: PHP Syntax Lint ==="
+          find includes/ endpoints/ -name "*.php" -print0 | xargs -0 -n1 php -l
+          echo "PHP lint passed"
+
+      # Quality Gate 2: Static Analysis
+      - name: PHPStan Static Analysis
+        run: |
+          echo "=== Quality Gate 2: PHPStan Static Analysis (Level 5) ==="
+          vendor/bin/phpstan analyse --no-progress
+          echo "Static analysis passed"
+
+      # Quality Gate 3: Unit Tests
+      - name: PHPUnit Tests
+        run: |
+          echo "=== Quality Gate 3: PHPUnit Test Suite ==="
+          vendor/bin/phpunit --testdox --colors=always
+          echo "All tests passed"
+
+      # Quality Gate 4: Coverage Report
+      - name: Generate Coverage Report
+        run: |
+          echo "=== Quality Gate 4: Code Coverage ==="
+          vendor/bin/phpunit --coverage-text --colors=always 2>&1 | tee coverage-report.txt
+          echo "Coverage report generated"
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report.txt

@@ -2,8 +2,8 @@
 /**
  * Unit tests file for getPricePerMonth() function.
  *
- * Tests the core financial calculation that normalises subscription costs from various billing cycles (daily/weekly/monthly/yearly) to a monthly
- * equivalent. This function is critical for accurate spending statistics.
+ * Theis test about the core financial calculation that normalises subscription costs from various billing cycles (daily/weekly/monthly/yearly) to a monthly equivalent.
+ * This function is critical for accurate spending statistics
  *
  * Source: includes/stats_calculations.php, lines 3-19
  *
@@ -86,7 +86,8 @@ class HelpersTest extends TestCase
             'Biannual $60 subscription should equal $10/month');
     }
 
-    // DEFECT 1 — FIXED: frequency=0 now returns 0.0 safely
+    
+    // Defect 1 Fixed: frequency=0 now returns 0.0 safely 
 
     #[Test]
     public function frequencyZeroReturnsZeroAfterFix(): void
@@ -119,7 +120,7 @@ class HelpersTest extends TestCase
     }
 
 
-    // DEFECT 2 — FIXED: unrecognised cycle uses default case
+    // Defect 2 Fixed: unrecognised cycle uses default case
 
     #[Test]
     public function unrecognisedCycleUsesDefaultAfterFix(): void
