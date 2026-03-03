@@ -1,5 +1,7 @@
 # Testing Framework
 
+Built against Wallos v4.6.1. Forked from the main repository for a software quality assurance case study.
+
 ## Getting Started
 
 Install the dev dependencies with Composer, then run the test suite:
@@ -18,7 +20,7 @@ vendor/bin/phpstan analyse                   # static analysis (level 5)
 
 ## What This Covers
 
-Before this work, Wallos had no automated tests. The goal was to add a practical testing foundation addressing the most at-risk areas of the application: financial calculations, currency conversion, input handling, and common patterns of security.
+Wallos v4.6.1 had no automated tests before this work, Wallos had no automated tests. The goal was to add a practical testing foundation addressing the most at-risk areas of the application: financial calculations, currency conversion, input handling, and common patterns of security.
 
 The current state of the test suite is 70 tests in five files:
 
