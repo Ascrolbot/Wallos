@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.6.2](https://github.com/Ascrolbot/Wallos/compare/v4.6.1...v4.6.2) (2026-03-03)
+
+
+### Bug Fixes
+
+* add input validation to getPricePerMonth for frequency and cycle ([f20132e](https://github.com/Ascrolbot/Wallos/commit/f20132eaf46c37d50273969efd218e401cd0fccc))
+
 ## [4.6.1](https://github.com/ellite/Wallos/compare/v4.6.0...v4.6.1) (2026-02-10)
 
 
